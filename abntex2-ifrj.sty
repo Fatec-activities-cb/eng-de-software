@@ -1,0 +1,295 @@
+% projcvor.cls
+% Autor: Andrey Dione Ferreira - <andrey.ferreira@ifrj.edu.br>
+% Dependência: abntex2 >= 1.7
+
+\ProvidesPackage{abntex2-ifrj}[2021/08/03 Criacao desta customizacao do abnTeX2]
+
+
+% ---
+% Pacotes fundamentais
+% ---
+\usepackage[utf8]{inputenc}	% Codificacao do documento (conversão automática dos acentos)
+\usepackage{indentfirst}	% Indenta o primeiro parágrafo de cada seção.
+\usepackage{color}			% Controle das cores
+\usepackage{graphicx}		% Inclusão de gráficos
+\usepackage{microtype} 		% para melhorias de justificação
+% ---
+
+
+% ---
+% Pacotes adicionais, usados apenas no âmbito do Modelo 
+
+\usepackage{lipsum}				% para geração de dummy text
+% \usepackage{scrextend}
+\usepackage{calc}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{anyfontsize}
+\usepackage{afterpage}
+\usepackage[bottom]{footmisc} % rodapé no final da página
+
+% ---
+
+% ---------- FONTES ---------- %
+% \usepackage{lmodern}			% Usa a fonte Latin Modern
+
+% \usepackage[scaled]{helvet}
+% \renewcommand\familydefault{\sfdefault} 
+% \usepackage[T1]{fontenc}
+
+% \usepackage[sfdefault,light]{FiraSans} % opção 'sfdefault' ativa Fira Sans como fonte padrão d etexto
+% \usepackage[T1]{fontenc} % Selecao de codigos de fonte.
+% \renewcommand*\oldstylenums[1]{{\firaoldstyle #1}}
+
+% \usepackage{tgbonum}
+%---------- CORES --------------%
+\definecolor{cinzaIF}{cmyk}{0,0,0,.5}
+\definecolor{vermelhoIF}{RGB}{200,25,30}
+
+% NOVOS COMANDOS
+\providecommand{\imprimirarea}{}
+\newcommand{\linhapesquisa}[1]{\renewcommand{\imprimirarea}{#1\,}}
+
+\providecommand{\imprimirprograma}{}
+\newcommand{\programa}[1]{\renewcommand{\imprimirprograma}{#1\,}}
+
+\instituicao{%
+ Faculdade de Tecnologia de Capão Bonito
+  \par
+  FATEC Capão Bonito}
+
+\makeatletter
+\renewcommand{\imprimircapa}{%
+    \begin{tikzpicture}[remember picture, overlay]
+
+%logo if
+\node (logo) at ($(current page.center)+(-4.9,12.5)$) [align=left] {\includegraphics[scale=0.75]{imagens/fatec.png}};
+
+% quem recebe o trabalho
+\node (recebedor) at ($(current page.center)+(0,7.5)$) [align=center] {\Large\sffamily \imprimirprograma};
+
+% local e data
+\node (localdata) at ($(current page.center)+(0,-12.5)$) [align=center] {\imprimirlocal \\ \@date};
+        
+% contorno vermelho
+        \node (bottom) at (current page.south)
+              [rectangle, fill=vermelhoIF, inner sep=0 pt, anchor=south,
+               minimum width=1\paperwidth, minimum height=0.5cm]{};
+
+        
+% Título, autoria e tipo
+\node at ($(current page.center)+(-1,0)$) [align=left, text width=15cm]
+{
+\baselineskip=30pt
+{\huge\sffamily\bfseries\@title} \\[1cm]
+{\textcolor{orange}{\bfseries \Large \@author}}\\[3pt]
+\imprimirtipotrabalho
+};
+
+
+% enfeite verde
+\coordinate (aux1) at ([yshift=-10pt, xshift=3pt]current page.north east);
+\coordinate (aux2) at ([yshift=-410pt]current page.north east);
+\coordinate (aux3) at ([xshift=-4.0cm]current page.north east);
+\coordinate (aux4) at ([yshift=-150pt]current page.north east);
+
+\begin{scope}[cinzaIF!40,line width=12pt,rounded corners=12pt]
+\draw 
+  (aux1) -- coordinate (a)
+  ++(225:5) --
+  ++(-45:5.2) coordinate (b);
+\draw[shorten <= -10pt]
+  (aux3) --
+  (a) --
+  (aux1);
+\draw[opacity=0.6,cinzaIF,shorten <= -10pt]
+  (b) --
+  ++(225:2.2) --
+  ++(-45:2.5);
+\end{scope}
+
+\draw[cinzaIF,line width=8pt,rounded corners=8pt,shorten <= -10pt]
+  (aux4) --
+  ++(225:0.8) --
+  ++(-45:1.8);
+
+\begin{scope}[cinzaIF!70,line width=6pt,rounded corners=8pt]
+\draw[shorten <= -10pt]
+  (aux2) --
+  ++(225:3) coordinate[pos=0.45] (c) --
+  ++(-45:3.1);
+\draw
+  (aux2) --
+  (c) --
+  ++(135:2.5) --
+  ++(45:2.5) --
+  ++(-45:2.5) coordinate[pos=0.3] (d);   
+\draw 
+  (d) -- +(45:1);
+\end{scope}
+
+
+
+\end{tikzpicture}
+
+\setcounter{page}{0}
+}
+\makeatother
+
+
+% --------------------------------------------
+% informações do PDF
+% --------------------------------------------
+\makeatletter
+\hypersetup{
+     	%pagebackref=true,
+		pdftitle={\@title},
+		pdfauthor={\@author},
+    	pdfsubject={\imprimirpreambulo},
+	    pdfcreator={LaTeX with abnTeX2},
+		pdfkeywords={abnt}{latex}{abntex}{abntex2}{projeto de pesquisa}{IFRJ-CVR},
+		colorlinks=true,       		% false: boxed links; true: colored links
+    	linkcolor=black,          	% color of internal links
+    	citecolor=black,        		% color of links to bibliography
+    	filecolor=black,      		% color of file links
+		urlcolor=black,
+		bookmarksdepth=4
+}
+\makeatother
+% ---
+
+% --------------------------------------------
+% Espaçamentos entre linhas e parágrafos
+% --------------------------------------------
+% O tamanho da indentação do parágrafo é dado por:
+\setlength{\parindent}{1.3cm}
+
+% Controle do espaçamento entre um parágrafo e outro:
+\setlength{\parskip}{0.2cm}  % tente também \onelineskip
+
+\newcommand{\listofquadrosname}{LISTA DE QUADROS}
+\newcommand{\listofgraficosname}{LISTA DE GRÁFICOS}
+
+% Cria a lista de quadros
+\newcommand{\quadroname}{Quadro}
+\newfloat[chapter]{quadro}{loq}{\quadroname}
+\newlistof{listofquadros}{loq}{\listofquadrosname}
+\newlistentry{quadro}{loq}{0}
+
+\counterwithout{quadro}{chapter}
+\renewcommand{\cftquadroname}{\quadroname\space}
+\renewcommand*{\cftquadroaftersnum}{\hfill--\hfill}
+
+% Cria a lista de gráficos
+\newcommand{\graficoname}{Gr\'{a}fico}
+\newfloat[chapter]{grafico}{logr}{\graficoname}
+\newlistof{listofgraficos}{logr}{\listofgraficosname}
+\newlistentry{grafico}{logr}{0}
+
+\counterwithout{grafico}{chapter}
+\renewcommand{\cftgraficoname}{\graficoname\space}
+\renewcommand*{\cftgraficoaftersnum}{\hfill--\hfill}
+
+% --------------------------------------------
+% REFERÊNCIAS 
+\usepackage[alf, abnt-emphasize=bf, recuo=0cm, abnt-etal-cite=2, abnt-etal-list=0]{abntex2cite}
+
+% \usepackage[
+% style = abnt, % Sistema alfabético
+% % style = abnt-numeric, % Sistema numérico
+% % style = abnt-ibid, % Notas de referência
+% ]{biblatex}
+
+% --------------------------------------------
+
+\addto\extrasbrazil{%
+  \def\chapterautorefname{Capítulo}%
+  \def\sectionautorefname{Seção}%
+  \def\subsectionautorefname{Subseção}%
+  \def\figureautorefname{Figura}%
+  \def\tableautorefname{Tabela}%
+}
+
+
+
+% Corrigindo delimitadores de url nas referências
+\makeatletter
+\@ifpackageloaded{url}{%
+\addtociteoptionlist{abnt-url-package=url}
+\def\UrlLeft{}
+\def\UrlRight{}
+\urlstyle{same}}
+\makeatother
+% -----------------
+% Cronograma
+%------------------
+
+\usepackage{enumitem}
+\newlist{etapas}{enumerate}{1}% 
+\setlist[etapas]{label={Etapa \arabic*} - ,wide=0pt, widest=99,leftmargin=\parindent}
+
+\usepackage{pgfgantt}
+\ganttset{
+    % bar height=0.6,
+    y unit title=0.7cm,
+    y unit chart=0.7cm,
+    title height=0.99,
+    title/.append style={draw=none, fill=RoyalBlue!40!black},
+    progress label text={\small \sffamily\pgfmathprintnumber[fixed, precision=1]{#1}\% completa},
+    title label font=\sffamily\small\color{white},
+    bar label font=\small\sffamily\color{black},
+    % bar label node/.append style={align=left},
+    bar/.style={fill=RoyalBlue!90!black}
+}
+
+% ------------------------
+% Cabeçalho
+% ------------------------
+\setlength{\headwidth}{\textwidth}
+\addtolength{\headwidth}{\marginparsep}
+\addtolength{\headwidth}{\marginparwidth}
+\pagestyle{companion}
+
+
+
+% \makepagestyle{mystyle}
+% \makeoddhead{mystyle}{\itshape\chaptername}{}{\thepage}
+% \makeevenhead{mystyle}{\thepage}{}{\itshape\chaptername}
+% \pagestyle{mystyle}
+
+% ----------------------------
+% REDEFININDO FOLHA DE ROSTO
+% ---------------------------
+\makeatletter
+\renewcommand{\folhaderostocontent}{
+\begin{center}
+{\ABNTEXchapterfont\large\imprimirautor}
+\vspace*{\fill}\vspace*{\fill}
+\begin{center}
+\ABNTEXchapterfont\bfseries\Large\imprimirtitulo
+\end{center}
+\vspace*{\fill}
+{%
+\hspace{.45\textwidth}
+\begin{minipage}{.5\textwidth}
+\SingleSpacing
+\imprimirpreambulo\\[0.5cm]
+    %Linha de pesquisa: \imprimirarea
+\end{minipage}%
+\vspace*{\fill}
+}%
+{{\imprimirinstituicao
+\vspace*{\fill}}\par}
+% {\large\imprimirorientadorRotulo~\imprimirorientador\par}
+% \abntex@ifnotempty{\imprimircoorientador}{%
+% {\large\imprimircoorientadorRotulo~\imprimircoorientador}%
+% }%
+% \vspace*{\fill}
+{\large\imprimirlocal}
+\par
+{\large\imprimirdata}
+\vspace*{1cm}
+\end{center}
+}
+\makeatother
