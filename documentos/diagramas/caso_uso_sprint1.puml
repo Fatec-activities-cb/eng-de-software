@@ -1,0 +1,26 @@
+@startuml
+title Diagrama de Caso de Uso -- Sprint 1 (US01, US02, US03)
+left to right direction
+
+actor Cliente
+
+rectangle "Totem de Autoatendimento" {
+  usecase "UC01 -- Visualizar Cardápio" as UC01
+  usecase "UC02 -- Adicionar Item ao Carrinho" as UC02
+  usecase "UC03 -- Personalizar Pedido" as UC03
+}
+
+Cliente --> UC01
+Cliente --> UC02
+Cliente --> UC03
+
+UC02 ..> UC01 : <<include>>
+UC03 ..> UC02 : <<extend>>
+
+note right of UC03
+  Critério: ao acessar item customizável,
+  exibir opções de remover ingredientes
+  ou adicionar extras.
+end note
+
+@enduml
